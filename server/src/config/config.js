@@ -7,7 +7,11 @@ module.exports = {
         options: {
             dialect: process.env.DIALECT || "mysql",
             host: process.env.HOST || "localhost",
-            storage: "./lyfting.sql"
+            storage: "./lyfting.sql",
+            define: {
+                timestamps: false
+            }
         }
+        
     }
 }
