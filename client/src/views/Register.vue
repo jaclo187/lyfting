@@ -1,30 +1,65 @@
 <template>
   <div>
-    <h1>Register</h1>
-    <input v-model="email" type="email" name="email" id="email" placeholder="E-mail">
-    <input v-model="password" type="password" name="password" id="password">
-    <input @click="register" type="submit" value="Register">
+    <h1 class="pl5">Register</h1>
+    <v-form>
+      <v-container>
+        <v-row>
+          <v-col cols="8" sm="4" md="3">
+            <v-text-field v-model="username" label="Username"></v-text-field>
+          </v-col>
+
+          <v-col cols="8" sm="4" md="3">
+            <v-text-field v-model="email" label="E-mail"></v-text-field>
+          </v-col>
+
+          <v-col cols="8" sm="4" md="3">
+            <v-text-field v-model="password" label="Password"></v-text-field>
+          </v-col>
+
+          <v-col>
+            <v-btn @click="register">Register</v-btn>
+          </v-col>
+        </v-row>
+
+        <br />
+      </v-container>
+    </v-form>
+    <v-snackbar v-model="snackbar" timeout="3000" color="error">
+      <span>{{ error }}</span>
+      <v-btn flat color="#ff5252" @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
   </div>
 </template>
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
 export default {
-  data () {
-    return{
+  data() {
+    return {
       email: '',
-      password: ''
+      username: '',
+      password: '',
+      error: null,
+      snackbar: false
     }
   },
   methods: {
-    async register () {
-      const response = await AuthenticationService.register({
+    async register() {
+      await AuthenticationService.register({
         email: this.email,
+        username: this.username,
         password: this.password
+      }).catch(error => {
+        this.error = error.response.data.error
+        this.snackbar = true
       })
-      console.log(response)
     }
   }
 }
 </script>
 
+<style scoped>
+.error {
+  color: red;
+}
+</style>

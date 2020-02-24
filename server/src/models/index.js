@@ -18,6 +18,7 @@ fs.readdirSync(__dirname)
     .forEach((file) => {
         const model = sequelize.import(path.join(__dirname, file))
         if (model) db[model.name] = model
+        else console.error("Something is wrong, I can feel it...")
     })
 
 db.sequelize = sequelize
