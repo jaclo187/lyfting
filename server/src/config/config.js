@@ -12,6 +12,8 @@ module.exports = {
                 timestamps: false
             }
         }
-        
+    },
+    jwt : {
+        secret: process.env.JWT_SECRET || "supersecretsecret"
     }
 }
