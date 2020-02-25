@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="pl5">Register</h1>
-    <v-form>
+    <v-form autocomplete="off">
       <v-container>
         <v-row>
           <v-col cols="8" sm="4" md="3">
@@ -13,7 +13,8 @@
           </v-col>
 
           <v-col cols="8" sm="4" md="3">
-            <v-text-field v-model="password" label="Password"></v-text-field>
+            <v-text-field v-model="password" type="password" label="Password">
+            </v-text-field>
           </v-col>
 
           <v-col>
