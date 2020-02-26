@@ -27,7 +27,7 @@
     </v-form>
     <v-snackbar v-model="snackbar" timeout="3000" color="error">
       <span>{{ error }}</span>
-      <v-btn flat color="#ff5252" @click="snackbar = false">Close</v-btn>
+      <v-btn text color="#ff5252" @click="snackbar = false">Close</v-btn>
     </v-snackbar>
   </div>
 </template>
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     async register() {
-      await AuthenticationService.register({
+      const response = await AuthenticationService.register({
         email: this.email,
         username: this.username,
         password: this.password
@@ -54,6 +54,10 @@ export default {
         this.error = error.response.data.error
         this.snackbar = true
       })
+      if(response){
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setUser', response.data.user)
+      }
     }
   }
 }
