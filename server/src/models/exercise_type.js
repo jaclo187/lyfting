@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('exerciseType', {
+  return sequelize.define('exercise_type', {
     id: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       autoIncrement: true,
@@ -10,8 +10,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     name: {
       type: DataTypes.ENUM('weight','time','body'),
-      allowNull: false,
-      field: 'name'
+      allowNull: false
     }
   }, {
     tableName: 'exercise_type'

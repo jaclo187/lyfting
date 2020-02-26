@@ -5,31 +5,27 @@ module.exports = function(sequelize, DataTypes) {
     id: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       autoIncrement: true,
-      primaryKey: true,
-      field: 'id'
+      primaryKey: true
     },
     name: {
       type: DataTypes.STRING(100),
-      allowNull: false,
-      field: 'name'
+      allowNull: false
     },
-    fkMusclegroup: {
+    fk_musclegroup: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       allowNull: true,
       references: {
         model: 'musclegroup',
         key: 'id'
-      },
-      field: 'fk_musclegroup'
+      }
     },
-    fkType: {
+    fk_type: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       allowNull: true,
       references: {
         model: 'exercise_type',
         key: 'id'
-      },
-      field: 'fk_type'
+      }
     }
   }, {
     tableName: 'exercise'

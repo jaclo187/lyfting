@@ -1,32 +1,26 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('workoutSet', {
-    id: {
+  return sequelize.define('workout_template', {
+    fk_user: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
-      field: 'id'
+      references: {
+        model: 'user',
+        key: 'id'
+      }
     },
-    fkWorkout: {
+    fk_workout: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: 'workout',
         key: 'id'
-      },
-      field: 'fk_workout'
-    },
-    fkSet: {
-      type: DataTypes.INTEGER(10).UNSIGNED,
-      allowNull: false,
-      references: {
-        model: 'set',
-        key: 'id'
-      },
-      field: 'fk_set'
+      }
     }
   }, {
-    tableName: 'workout_set'
+    tableName: 'workout_template'
   });
 };

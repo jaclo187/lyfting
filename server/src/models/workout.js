@@ -5,23 +5,24 @@ module.exports = function(sequelize, DataTypes) {
     id: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       autoIncrement: true,
-      primaryKey: true,
-      field: 'id'
+      primaryKey: true
     },
     date: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-      field: 'date'
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
     },
-    fkUser: {
+    name: {
+      type: DataTypes.STRING(64),
+      allowNull: true
+    },
+    fk_user: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       allowNull: false,
       references: {
         model: 'user',
         key: 'id'
-      },
-      field: 'fk_user'
+      }
     }
   }, {
     tableName: 'workout'

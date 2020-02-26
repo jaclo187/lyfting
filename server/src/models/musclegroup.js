@@ -5,13 +5,11 @@ module.exports = function(sequelize, DataTypes) {
     id: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       autoIncrement: true,
-      primaryKey: true,
-      field: 'id'
+      primaryKey: true
     },
     name: {
       type: DataTypes.STRING(100),
-      allowNull: false,
-      field: 'name'
+      allowNull: false
     }
   }, {
     tableName: 'musclegroup'

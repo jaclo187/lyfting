@@ -5,8 +5,15 @@ module.exports = function(sequelize, DataTypes) {
     id: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       autoIncrement: true,
-      primaryKey: true,
-      field: 'id'
+      primaryKey: true
+    },
+    fk_workout: {
+      type: DataTypes.INTEGER(10).UNSIGNED,
+      allowNull: false,
+      references: {
+        model: 'workout',
+        key: 'id'
+      }
     }
   }, {
     tableName: 'set'

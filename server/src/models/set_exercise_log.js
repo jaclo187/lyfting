@@ -1,45 +1,42 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('setExerciseLog', {
+  return sequelize.define('set_exercise_log', {
     id: {
-      type: DataTypes.INTEGER(11),
-      autoIncrement: true,
-      primaryKey: true,
-      field: 'id'
+      type: DataTypes.DATE,
+      //allowNull: false,
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+      primaryKey: true
     },
     weight: {
       type: DataTypes.FLOAT,
-      allowNull: true,
-      field: 'weight'
+      allowNull: true
     },
     reps: {
       type: DataTypes.INTEGER(3).UNSIGNED,
-      allowNull: true,
-      field: 'reps'
+      allowNull: true
     },
     time: {
       type: DataTypes.INTEGER(10).UNSIGNED,
-      allowNull: true,
-      field: 'time'
+      allowNull: true
     },
-    fkSet: {
+    fk_set: {
       type: DataTypes.INTEGER(10).UNSIGNED,
-      allowNull: true,
+      allowNull: false,
+      primaryKey: true,
       references: {
         model: 'set',
         key: 'id'
-      },
-      field: 'fk_set'
+      }
     },
-    fkExercise: {
+    fk_exercise: {
       type: DataTypes.INTEGER(10).UNSIGNED,
-      allowNull: true,
+      allowNull: false,
+      primaryKey: true,
       references: {
         model: 'exercise',
         key: 'id'
-      },
-      field: 'fk_exercise'
+      }
     }
   }, {
     tableName: 'set_exercise_log'
