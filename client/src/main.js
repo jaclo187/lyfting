@@ -5,10 +5,13 @@ import store from './store'
 import 'vuetify/dist/vuetify.min.css'
 import Vuetify from './plugins/vuetify'
 import vuetify from './plugins/vuetify'
+import {sync} from 'vuex-router-sync'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuetify)
+
+sync(store, router)
 
 new Vue({
   router,
