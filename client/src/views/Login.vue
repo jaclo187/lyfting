@@ -17,9 +17,9 @@
         <br />
       </v-container>
     </v-form>
-    <v-snackbar v-model="snackbar" timeout="3000" color="error">
+    <v-snackbar v-model="snackbar" timeout=3000 color="error">
       <span>{{ error }}</span>
-      <v-btn flat color="#ff5252" @click="snackbar = false">Close</v-btn>
+      <v-btn text color="#ff5252" @click="snackbar = false">Close</v-btn>
     </v-snackbar>
   </div>
 </template>
@@ -37,13 +37,17 @@ export default {
   },
   methods: {
     async login() {
-      await AuthenticationService.login({
+      const response = await AuthenticationService.login({
         email: this.email,
         password: this.password
       }).catch(error => {
         this.error = error.response.data.error
         this.snackbar = true
       })
+      if (response) {
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setUser', response.data.user)
+      }
     }
   }
 }
