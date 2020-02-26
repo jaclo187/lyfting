@@ -3,6 +3,10 @@
 const bcrypt = require('bcryptjs')
 
 const cryptPassword = async user => {
+  /**
+   * Cyphering the user password with a 10 bit salt
+   * If the user is updated, but the password does not change, the function returns
+   */
   if(!user.changed('password')) return
   user.password = await bcrypt.hash(user.password, 10)
 }
@@ -46,6 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     }, {
       tableName: 'user',
       hooks : {
+        //
         beforeCreate: cryptPassword,
         beforeUpdate: cryptPassword /**I tested a lot of differend ideas, this one seems to be the only one to work :( */
       }
