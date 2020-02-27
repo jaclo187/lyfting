@@ -25,7 +25,7 @@
         <br />
       </v-container>
     </v-form>
-    <v-snackbar v-model="snackbar" timeout="3000" color="error">
+    <v-snackbar v-model="snackbar" timeout=3000 color="error">
       <span>{{ error }}</span>
       <v-btn text color="#ff5252" @click="snackbar = false">Close</v-btn>
     </v-snackbar>
