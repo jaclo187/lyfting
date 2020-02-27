@@ -8,35 +8,37 @@
         </span>
       </router-link>
     </v-toolbar-title>
-    <!-- <v-toolbar-item>
+    <v-toolbar-items>
       <v-hover>
-        <v-btn text dark to="/">
-          Home
+        <v-btn v-if="$store.state.isLoggedIn" text dark to="/workouts">
+          Workouts
         </v-btn>
       </v-hover>
-    </v-toolbar-item> -->
+    </v-toolbar-items>
+
     <v-spacer></v-spacer>
-    <v-toolbar-item>
+
+    <v-toolbar-items>
       <v-hover>
         <v-btn v-if="!$store.state.isLoggedIn" text dark to="/register">
           Register
         </v-btn>
       </v-hover>
-    </v-toolbar-item>
-    <v-toolbar-item>
+    </v-toolbar-items>
+    <v-toolbar-items>
       <v-hover>
         <v-btn v-if="!$store.state.isLoggedIn" text dark to="/login">
           Login
         </v-btn>
       </v-hover>
-    </v-toolbar-item>
-    <v-toolbar-item>
+    </v-toolbar-items>
+    <v-toolbar-items>
       <v-hover>
         <v-btn v-if="$store.state.isLoggedIn" text dark @click='logout'>
           Logout
         </v-btn>
       </v-hover>
-    </v-toolbar-item>
+    </v-toolbar-items>
   </v-app-bar>
 </template>
 <script>
@@ -45,6 +47,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logoutUser')
+      this.$router.push({name: 'root'})
     }
   }
 }
