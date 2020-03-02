@@ -34,21 +34,17 @@ module.exports = {
                     email: email
                 }
             })
+            
             if(!loginUser){
                 return res.status(403).send({error: ERRORMESSAGE})
             }
-            //console.log(loginUser)
+
             const isPasswordCorrect = await loginUser.comparePasswords(password)
-            //console.log("Password correct: ", isPasswordCorrect)
-            
             if(!isPasswordCorrect){
                 return res.status(403).send({error: ERRORMESSAGE})
             }
 
             const jsonUser = loginUser.toJSON()
-
-            //console.log(jsonUser)
-
             delete jsonUser.password //Deleting user password form json response
 
             res.send({
