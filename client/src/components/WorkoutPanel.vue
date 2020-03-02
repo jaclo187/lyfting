@@ -1,16 +1,14 @@
 <template>
-  <div>
-    <!-- <div>{{workout}}</div> -->
-    <h4 v-if="workout.name !== '' && workout.name"> {{workout.name}} Kock</h4>
-    <h4 v-else v-html="workout.date"></h4>
+  <Panel :title="workout.name != null ? workout.name : workout.date" class="mb-2">
     <v-card v-if="workout">
       <SetPanel v-for="set in workout.sets" :key="set.id" :set='set'/>
     </v-card>
-  </div>
+  </Panel>
 </template>
 
 <script>
 import SetPanel from '@/components/SetPanel'
+import Panel from '@/components/Panel'
 export default {
    data(){
     return{
@@ -24,11 +22,14 @@ export default {
 
    },
    components: {
-     SetPanel
+     SetPanel,
+     Panel
+   },
+   mounted(){
    }
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>
