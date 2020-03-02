@@ -15,17 +15,17 @@ const routes = [
   },
   {
     path: '/register',
-    name: 'register',
+    name: 'Register',
     component: Register
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: Login
   },
   {
     path: '/workouts',
-    name: 'workouts',
+    name: 'Workouts',
     component: Workouts
   },
   {
