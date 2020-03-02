@@ -9,11 +9,7 @@
       <v-flex md6>
         <v-card outlined tile>
           <h3>Recent Workouts</h3>
-          <!-- <template v-for="w in workouts">
-            <v-col :key="w.date"> -->
-              <WorkoutPanel v-for="w in workouts" :key="w.date" :workout="w"/>
-           <!--  </v-col>
-          </template> -->
+          <WorkoutPanel v-for="w in workouts" :key="w.date" :workout="w" mt-2/>
         </v-card>
       </v-flex>
       <v-flex md6>
@@ -30,81 +26,21 @@
 
 <script>
 import WorkoutPanel from '@/components/WorkoutPanel'
+import WorkoutService from '@/services/WorkoutService'
 export default {
     data(){
         return{
-            workouts : [
-                {
-                  name: "Back",
-                  date: new Date().toISOString(),
-                  sets: [
-                    {
-                      name: "Rowing",
-                      id: 1,
-                      data : {
-                          reps: [10,10,10],
-                          weight: [40,50,60],
-                          time: null
-                      }
-                    },
-                    {
-                      name: "Deadlifts",
-                      id: 2,
-                      data : {
-                          reps: [5,5,5],
-                          weight: [80,90,100],
-                          time: null
-                      }
-                    },
-                    {
-                      name: "Face Pulls",
-                      id: 3,
-                      data : {
-                          reps: [5,5,5],
-                          weight: [80,90,100],
-                          time: null
-                      }
-                    }
-                  ]
-                },
-                {
-                  name: "",
-                  date: "Yesterday",
-                  sets: [
-                    {
-                      name: "Rowing",
-                      id: 4,
-                      data : {
-                          reps: [10,10,10],
-                          weight: [40,50,60],
-                          time: null
-                      }
-                    },
-                    {
-                      name: "Deadlifts",
-                      id: 5,
-                      data : {
-                          reps: [5,5,5],
-                          weight: [80,90,100],
-                          time: null
-                      }
-                    },
-                    {
-                      name: "Face Pulls",
-                      id: 6,
-                      data : {
-                          reps: [5,5,5],
-                          weight: [80,90,100],
-                          time: null
-                      }
-                    }
-                  ]
-                }
-            ]
+            workouts : null
         }
     },
     components :{
         WorkoutPanel
+    },
+    async mounted(){
+      if(this.$store.state.isLoggedIn){
+        this.workouts = (await WorkoutService.index({token: this.$store.state.token})).data.workouts
+      } 
+      else this.$router.push({name: 'home'})
     }
 }
 </script>
