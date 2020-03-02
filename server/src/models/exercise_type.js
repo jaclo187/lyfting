@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       field: 'id'
     },
     name: {
-      type: DataTypes.ENUM('weight','time','body'),
+      type: DataTypes.STRING(255),
       allowNull: false
     }
   }, {
