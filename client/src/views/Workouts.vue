@@ -1,26 +1,23 @@
 <template>
-  <v-container v-if="!$store.state.isLoggedIn">
-    <v-col md="12">
-      <v-card text>Please login or register to use this app</v-card>
-    </v-col>
-  </v-container>
-  <v-container v-else>
-    <v-layout row>
-      <v-flex md6>
-        <v-card outlined tile>
+  <v-container>
+    <v-row row>
+      <v-col md5 >
+        <v-card>
           <h3>Recent Workouts</h3>
           <WorkoutPanel v-for="w in workouts" :key="w.date" :workout="w" mt-2/>
         </v-card>
-      </v-flex>
-      <v-flex md6>
-        <v-card outlined tile>
-          Create a new Workout
+      </v-col>
+      <v-col md5>
+        <v-card>
+          <h3>Create a new Workout</h3>
           <v-card>
-            Here you can create a new Workout
+            <div class="my-2">
+              <v-btn class="mt-2 mb-2" x-large color="success" dark to='/workouts/create'><v-icon>mdi-plus</v-icon>Add a workout</v-btn>
+            </div>
           </v-card>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -39,8 +36,9 @@ export default {
     async mounted(){
       if(this.$store.state.isLoggedIn){
         this.workouts = (await WorkoutService.index({token: this.$store.state.token})).data.workouts
+        console.log(this.workouts)
       } 
-      else this.$router.push({name: 'home'})
+      else this.$router.push({name: 'Home'})
     }
 }
 </script>
