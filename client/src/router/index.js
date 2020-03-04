@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import Workouts from '../views/Workouts.vue'
+import CreateWorkout from '../views/CreateWorkout.vue'
+import EditWorkout from '../views/EditWorkout.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,20 @@ const routes = [
     path: '/workouts',
     name: 'Workouts',
     component: Workouts
+  },
+  {
+    path: '/workouts/create',
+    name: 'Workouts-create',
+    component: CreateWorkout
+  },
+  {
+    path: '/workouts/edit/:id',
+    name: 'Workouts-edit',
+    component: EditWorkout
+  },
+  {
+    path: '/workouts/edit',
+    redirect: '/'
   },
   {
     path: '/about',
