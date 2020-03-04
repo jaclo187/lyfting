@@ -47,31 +47,29 @@ module.exports = {
                 returnObj = {}
 
                 for (let i = 0; i < result.length; i++) {
-                    const row = result[i];
+                    const row = result[i]
                     if( !Object.prototype.hasOwnProperty.call(returnObj, row.id) ){
                         returnObj[row.id] = {}
                         returnObj[row.id].id = row.id
                         returnObj[row.id].sets = {}
                         returnObj[row.id].name = row.name
                         returnObj[row.id].date = row.date
-
                     }
-                    if( returnObj[row.id].sets[row.id] == undefined ){
+                    if( returnObj[row.id].sets[row.set_id] == undefined ){
                         let set = {}
                         set.id = row.set_id
                         set.exercise = row.exercise === undefined ? null : row.exercise
                         set.type = row.type === undefined ? null : row.type
                         set.musclegroup = row.musclegroup === undefined ? null : row.musclegroup
                         set.data = []
-                        returnObj[row.id].sets[row.id] = set
+                        returnObj[row.id].sets[row.set_id] = set
                     }
-
                     let data = {
                         weight : row.weight,
                         time : row.time,
                         reps : row.reps
                     }
-                    returnObj[row.id].sets[row.id].data.push(data)
+                    returnObj[row.id].sets[row.set_id].data.push(data)
                 }
                 res.status(200).send(JSON.stringify({workouts: returnObj})) 
             }
@@ -120,6 +118,7 @@ module.exports = {
             const decode = jwt.decode(req.headers.authorization, config.jwt.secret)
             if(decode && req.params.id){
                 await workout.destroy({where: {id: req.params.id}})
+                res.status(200)
             } else {
                 res.status(402).send({error: "Could not delete workout, please try again"})
                 console.log(req.body)
