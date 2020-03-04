@@ -15,11 +15,11 @@ module.exports = {
         try {
             const decode = jwt.verify(req.body.token, config.jwt.secret);
 
-            if(decode && decode !== ""){
+            if(decode){
                 if(!conn) await connect()
                 let query,
                 params
-                
+
                 if(req.body.id) {
                     query = `SELECT workout.id AS id, workout.date AS date, workout.\`name\` AS \`name\`, \`set\`.id AS set_id, set_exercise_log.weight AS weight, set_exercise_log.reps AS reps, set_exercise_log.time AS time, exercise.\`name\` AS exercise, musclegroup.name AS musclegroup, exercise_type.name AS type
                     FROM workout
@@ -50,20 +50,30 @@ module.exports = {
                     const row = result[i];
                     if( !Object.prototype.hasOwnProperty.call(returnObj, row.id) ){
                         returnObj[row.id] = {}
-                        returnObj[row.id].sets = []
-                        
+                        returnObj[row.id].id = row.id
+                        returnObj[row.id].sets = {}
+                        returnObj[row.id].name = row.name
+                        returnObj[row.id].date = row.date
+
                     }
-                    if( !returnObj[row.id].sets[row.set_id] && row.set_id !== null ){
-                        returnObj[row.id].sets[row.set_id] = {}
-                        returnObj[row.id].sets[row.set_id].exercise = row.exercise
-                        returnObj[row.id].sets[row.set_id].musclegroup = row.musclegroup
-                        returnObj[row.id].sets[row.set_id].data = {}
+                    if( returnObj[row.id].sets[row.id] == undefined ){
+                        let set = {}
+                        set.id = row.set_id
+                        set.exercise = row.exercise === undefined ? null : row.exercise
+                        set.type = row.type === undefined ? null : row.type
+                        set.musclegroup = row.musclegroup === undefined ? null : row.musclegroup
+                        set.data = []
+                        returnObj[row.id].sets[row.id] = set
                     }
-                    returnObj[row.id].sets[row.set_id].data.weight = row.weight
-                    returnObj[row.id].sets[row.set_id].data.time = row.time
-                    returnObj[row.id].sets[row.set_id].data.reps = row.reps
+
+                    let data = {
+                        weight : row.weight,
+                        time : row.time,
+                        reps : row.reps
+                    }
+                    returnObj[row.id].sets[row.id].data.push(data)
                 }
-                res.status(200).send(JSON.stringify(returnObj))
+                res.status(200).send(JSON.stringify({workouts: returnObj})) 
             }
         } 
         catch(err) {
