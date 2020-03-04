@@ -1,13 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  plugins: [
+    createPersistedState()
+  ],
   state: {
     token: null,
     user: null,
-    isLoggedIn: false
+    isLoggedIn: false,
+    workout: null
   },
   mutations: {
     setToken(state, token){
@@ -23,6 +28,9 @@ export default new Vuex.Store({
       state.user = null
       state.token = null
       state.isLoggedIn = false
+    },
+    setWorkout(state, workout){
+      state.workout = workout
     }
   },
   actions: {
@@ -34,6 +42,9 @@ export default new Vuex.Store({
     },
     logoutUser({commit}){
       commit('logoutUser')
+    },
+    setWorkout({commit}, workout){
+      commit('setWorkout', workout)
     }
   },
   modules: {}
