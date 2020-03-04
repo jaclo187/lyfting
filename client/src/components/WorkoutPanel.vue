@@ -1,18 +1,18 @@
 <template>
-  <Panel :title="workout.name != null ? workout.name : workout.date" class="mb-2">
+  <ViewPanel :title="workout.name != null ? workout.name : workout.date" :id="workout.id" class="mb-2">
     <v-card v-if="workout">
       <SetPanel v-for="set in workout.sets" :key="set.id" :set='set'/>
     </v-card>
-  </Panel>
+  </ViewPanel>
 </template>
 
 <script>
 import SetPanel from '@/components/SetPanel'
-import Panel from '@/components/Panel'
+import ViewPanel from '@/components/ViewPanel'
 export default {
    data(){
     return{
-      
+    
     }
    },
    props: [
@@ -23,7 +23,7 @@ export default {
    },
    components: {
      SetPanel,
-     Panel
+     ViewPanel
    },
    mounted(){
    }
