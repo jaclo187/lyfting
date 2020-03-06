@@ -7,6 +7,18 @@ export default {
   post(token) {
     return Api().post('workouts/create', token)
   },
+  newSet(token, workoutID){
+    return Api().post('workouts/set/new', {token: token, workoutID: workoutID})
+  },
+  newSetLog(token, setID, exerciseName){
+    return Api().post('workouts/set/log', {token: token, setID: setID, exercise: exerciseName})
+  },
+  updateSetLog(token, setLog){
+    Api().patch('workouts/set/log/update', {token: token, setLog: setLog})
+  },
+  updateSetLogExercise(token, set, exercise){
+    Api().patch('workouts/set/exercise/update', {token: token, setID: set, exercise: exercise})
+  },
   update(token, id, name) {
     //name == new name
     Api().patch('workouts/update', {token, id, name})
