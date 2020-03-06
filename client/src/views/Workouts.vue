@@ -36,7 +36,6 @@ export default {
     async mounted(){
       if(this.$store.state.isLoggedIn){
         this.workouts = (await WorkoutService.index({token: this.$store.state.token})).data.workouts
-        console.log(this.workouts)
       } 
       else this.$router.push({name: 'Home'})
     }

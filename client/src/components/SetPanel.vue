@@ -20,13 +20,7 @@ export default {
     data(){
         return{}
     },
-    props : [ "set" ],
-    methods : {
-        
-    },
-    mounted(){
-        console.log(this.set)
-    }
+    props : [ "set" ]
 }
 </script>
 

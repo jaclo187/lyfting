@@ -1,6 +1,4 @@
 const {workout,  set, set_exercise_log , exercise/*, exercise_type,  musclegroup */ } = require('../models')
-//const ERRORMESSAGE = "Login infromation is invalid"
-//const JWTTIME = 60 * 60 * 24 * 7 //ONE WEEK
 const config = require('../config/config')
 const jwt = require('jsonwebtoken')
 const mysql = require('mysql2/promise');
@@ -121,7 +119,7 @@ module.exports = {
 
     async delete(req, res) {
         try {
-            const decode = jwt.decode(req.headers.authorization, config.jwt.secret)
+            const decode = jwt.verify(req.headers.authorization, config.jwt.secret)
             if(decode && req.params.id){
                 await workout.destroy({where: {id: req.params.id}})
                 res.status(200)
@@ -138,7 +136,7 @@ module.exports = {
     
     async newSet(req, res) {
         try{
-            const decode = jwt.decode(req.body.token, config.jwt.secret)
+            const decode = jwt.verify(req.body.token, config.jwt.secret)
             if(decode){
                 const newSet = await set.create({fk_workout: req.body.workoutID})
                 res.send(newSet.toJSON())
@@ -152,7 +150,7 @@ module.exports = {
 
     async newSetLog(req, res) {
         try{
-            const decode = jwt.decode(req.body.token)
+            const decode = jwt.verify(req.body.token, config.jwt.secret)
             if(decode){
                 const exerciseFound = await exercise.findOne({where: {name: req.body.exercise}})
                 let exerciseID = exerciseFound.toJSON().id
@@ -167,7 +165,7 @@ module.exports = {
     },
 
     async updateSetLog(req, res){
-        const decode = jwt.decode(req.body.token)
+        const decode = jwt.verify(req.body.token, config.jwt.secret)
         if(decode){
             try {
                 await set_exercise_log.update(
@@ -182,22 +180,28 @@ module.exports = {
                         }
                     }
                 )
-                res.status(200)
+                res.status(200).send()
             } catch (error) {
                 res.status(400).send({
                     error: "Set could not be updated."
                 })
             }
+        } else{
+            res.status(500).send({error: "Please log in to use our app"})
         }
     },
 
     async updateSetLogExercise(req, res){
-        const decode = jwt.decode(req.body.token)
+        
+        const decode = jwt.verify(req.body.token, config.jwt.secret)
+        
         if(decode){
             try {
-                await set_exercise_log.update(
+                const exerciseFound = await exercise.findOne({where: {name: req.body.exercise}})
+                let exerciseID = exerciseFound.toJSON().id
+                let result = await set_exercise_log.update(
                     {
-                        exercise: req.body.exercise
+                        fk_exercise: exerciseID
                     },
                     {
                         where: {
@@ -205,11 +209,15 @@ module.exports = {
                         }
                     }
                 )
+                if(result > 0) res.status(200).send()
+                else res.status()
             } catch (error) {
                 res.status(400).send({
                     error: "Exercise could not be updated."
                 })
             }
+        } else{
+            res.status(401).send({error: "Please log in to use our app"})
         }
     }
 }

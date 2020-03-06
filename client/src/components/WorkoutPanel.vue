@@ -24,10 +24,6 @@ export default {
    components: {
      SetPanel,
      ViewPanel
-   },
-   mounted(){
-     console.log("Set here")
-     console.log(this.workout)
    }
 }
 </script>
