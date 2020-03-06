@@ -12,8 +12,9 @@ app.use(cors())
 
 require('./routes')(app)
 
+app.use(express.static('../public'));
+
 sequelize.sync()
     .then(() => {
         app.listen(config.port)
-        console.log(`Server running on port ${config.port}`)
     })
