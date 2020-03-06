@@ -26,6 +26,8 @@ export default {
      ViewPanel
    },
    mounted(){
+     console.log("Set here")
+     console.log(this.workout)
    }
 }
 </script>
