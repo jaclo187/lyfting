@@ -8,17 +8,13 @@ export default {
     
     data(){
         return {
-            workout : null,
-            name: ""
+            workout : null
         }
     },
     props : [
     ],
     methods : {
-        async updateName(){
-            console.log("testtest", this.name)
-            await WorkoutService.update(this.$store.state.token, this.workout.id, this.name)
-        }
+        
     },
     async mounted(){
         if(this.$store.state.isLoggedIn){
