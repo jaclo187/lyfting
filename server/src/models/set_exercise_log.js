@@ -3,9 +3,8 @@
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('set_exercise_log', {
     id: {
-      type: DataTypes.DATE,
-      //allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+      type: DataTypes.INTEGER(10).UNSIGNED,
+      autoIncrement: true,
       primaryKey: true
     },
     weight: {
