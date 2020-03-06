@@ -12,6 +12,12 @@ module.exports = app => {
     app.post('/workouts/create', Workouts.post)
     app.patch('/workouts/update', Workouts.update)
     app.delete('/workouts/delete/:id', Workouts.delete)
+
+    app.post('/workouts/set/new', Workouts.newSet)
+    app.post('/workouts/set/log', Workouts.newSetLog)
+
+    app.patch('workouts/set/log/update', Workouts.updateSetLog)
+    app.patch('workouts/set/exercise/update', Workouts.updateSetLogExercise)
     /*Exercises */
     app.get('/exercises', Exercises.index)
 }
