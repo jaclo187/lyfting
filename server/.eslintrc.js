@@ -20,5 +20,8 @@ module.exports = {
         "vue"
     ],
     "rules": {
-    }
+    },
+    "ignorePatterns": [
+        "public"
+    ]
 };
