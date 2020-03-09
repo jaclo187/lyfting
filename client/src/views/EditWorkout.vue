@@ -4,61 +4,62 @@
       <v-text-field placeholder="Enter name here..." single-line clearable counter=50 @blur="updateName" v-model="workout.name"></v-text-field>
     </v-toolbar>
     <v-expansion-panels multiple focusable class="sm-6">
-      <v-expansion-panel v-for="set in workout.sets" v-bind:key="set.id" >
-        <v-expansion-panel-header v-if="set.exercise" class="uppercase">{{set.exercise}}</v-expansion-panel-header>
-        <v-expansion-panel-header v-else>&lt;Empty Exercise&gt;</v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-container cols=12>
-            <v-row
-            class="mb-6"
-            justify="center"
-            no-gutters>
-              <v-col pt2 pb2>
-                <v-autocomplete
-                class="uppercase pa-2"
-                tile
-                :items="exercises"
-                item-text="name"
-                v-model="set.exercise"
-                label="Select an exercise"
-                @change="updateSetLogExercise(set, $event)">
-                </v-autocomplete>
-              </v-col>
-              <v-col>
-                <v-btn
-                class="mx-2 mt-2 pa-2"
-                tile
-                dark
-                large
-                color="primary"
-                :value="set.id"
-                @click="addSetLog(set, $event)">
-                  Add Set
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-container>
-          <v-container class="grey lighten-5">
-            <v-row
-            class="mb-6"
-            no-gutters
-            v-for="(d, key) in set.data" :key="d.id">
-              <v-col pt2 pb2>
-                {{d.id}}
-                <h4 class="text-left">Set {{key + 1}}</h4>
-                <v-card
-                class="pa-2"
-                tile
-                outlined
-                v-for="type in types"
-                :key="type"
-                >
-                  <v-text-field v-model="d[`${type}`]" :type="type == 'reps' ? 'number' : 'text'" :label="type" @change="updateSetLog(d, $event)"></v-text-field>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-expansion-panel-content>
+      <v-expansion-panel v-for="set in workout.sets" v-bind:key="set.id">
+        <div v-if="set.id">
+          <v-expansion-panel-header v-if="set.exercise" class="uppercase">{{set.exercise}}</v-expansion-panel-header>
+          <v-expansion-panel-header v-else>&lt;Empty Exercise&gt;</v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-container cols=12>
+              <v-row
+              class="mb-6"
+              justify="center"
+              no-gutters>
+                <v-col pt2 pb2>
+                  <v-autocomplete
+                  class="uppercase pa-2"
+                  tile
+                  :items="exercises"
+                  item-text="name"
+                  v-model="set.exercise"
+                  label="Select an exercise"
+                  @change="updateSetLogExercise(set, $event)">
+                  </v-autocomplete>
+                </v-col>
+                <v-col>
+                  <v-btn
+                  class="mx-2 mt-2 pa-2"
+                  tile
+                  dark
+                  large
+                  color="primary"
+                  :value="set.id"
+                  @click="addSetLog(set, $event)">
+                    Add Set
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-container>
+            <v-container class="grey lighten-5">
+              <v-row
+              class="mb-6"
+              no-gutters
+              v-for="(d, key) in set.data" :key="d.id">
+                <v-col pt2 pb2 v-if="d.id">
+                  <h4 class="text-left">Set {{key + 1}}</h4>
+                  <v-card
+                  class="pa-2"
+                  tile
+                  outlined
+                  v-for="type in types"
+                  :key="type"
+                  >
+                    <v-text-field v-model="d[`${type}`]" :type="type == 'reps' ? 'number' : 'text'" :label="type" @change="updateSetLog(d, $event)" :class="`${type}_suffix`"></v-text-field>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-expansion-panel-content>
+        </div>
       </v-expansion-panel>
     </v-expansion-panels>
     <v-btn class="mx-2 mt-2" fab dark large color="indigo" @click="addSet">
@@ -98,6 +99,10 @@ export default {
       if(set.exercise){
         let setLog = await WorkoutService.newSetLog(this.$store.state.token, set.id, set.exercise)
         setLog = setLog.data
+        if(this.workout.sets[set.id].data == undefined){
+          //this.workout.sets[set.id].data = []
+          this.$set(this.workout.sets[set.id], "data", [])
+        }
         this.workout.sets[set.id].data.push(setLog)
       } else {
         this.error = "Please select an exercise first"
@@ -109,11 +114,12 @@ export default {
     async updateSetLogExercise(set){
       await WorkoutService.updateSetLogExercise(this.$store.state.token, set.id, set.exercise)
     },
-    
   },
-  props : [
-
-  ],
+  computable :  {
+    isSetDefined(){
+      return this.workout.sets.filter(set => set.id != undefined)
+    }
+  },
   async beforeMount(){
     if(this.workout === null){
       let result = await WorkoutService.index(
@@ -137,5 +143,13 @@ export default {
 </script>
 
 <style scoped>
-  
+  .weight_suffix::after{
+    content: ' kg';
+  }
+  .time_suffix::after{
+    content: ' m';
+  }
+  .reps_suffix::after{
+    content: ' x';
+  }
 </style>
