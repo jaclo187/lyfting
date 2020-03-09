@@ -9,8 +9,9 @@ module.exports = {
             });
             let result = []
             exercises.forEach(l => result.push(l.toJSON()))
-            res.send(result)
+            res.status(200).send(result)
         } catch(e){
+            res.status(500).send({error: "Internal Server Error"})
             console.log("error", e)
         }
     }
