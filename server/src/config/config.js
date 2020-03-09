@@ -6,7 +6,7 @@ module.exports = {
         host: 'localhost',
         database: process.env.DB_ENV || "lyfting",
         port: 3306,
-        user: process.env.DB_ENV || "node",
+        user: process.env.DB_USER || "node",
         password: process.env.DB_PASS || "passw0rd",
         Promise: bluebird,
         options: {
