@@ -21,6 +21,7 @@ module.exports = {
                 token: jwtSign(jsonUser)
             })
         } catch (e){
+            console.log(e)
             res.status(400).send({
                 error: "Username / Email must be unique"
             })
