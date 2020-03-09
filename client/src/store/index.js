@@ -1,12 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import * as Cookies from "js-cookie";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   plugins: [
-    createPersistedState()
+    createPersistedState({
+      //using cookies instead of localstorage, see https://dev.to/rdegges/please-stop-using-local-storage-1i04 
+      storage: {
+        getItem: key => Cookies.get(key),
+        // Please see https://github.com/js-cookie/js-cookie#json, on how to handle JSON.
+        setItem: (key, value) =>
+          Cookies.set(key, value, { expires: 7, secure: true }),
+        removeItem: key => Cookies.remove(key)
+      }
+    })
   ],
   state: {
     token: null,
