@@ -10,7 +10,7 @@ const config = require('./config/config')
 
 const https = require('https');
 const privateKey = fs.readFileSync(path.resolve("/etc/letsencrypt/live/lyfting.fit/privkey.pem"), 'utf8');
-const certificate = fs.readFileSync(path.resolve("/etc/letsencrypt/live/lyfting.fit/cert.pem"), 'utf8');
+const certificate = fs.readFileSync(path.resolve("/etc/letsencrypt/live/lyfting.fit/fullchain.pem"), 'utf8');
 
 const credentials = {key: privateKey, cert: certificate};
 
