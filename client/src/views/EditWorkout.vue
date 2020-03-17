@@ -37,6 +37,18 @@
                     Add Set
                   </v-btn>
                 </v-col>
+                <v-col>
+                  <v-btn
+                  class="mx-2 mt-2 pa-2"
+                  tile
+                  dark
+                  large
+                  color="primary"
+                  :value="set.id"
+                  @click="deleteSet(set, $event)">
+                    Remove Set
+                  </v-btn>
+                </v-col>
               </v-row>
             </v-container>
             <v-container class="grey lighten-5">
@@ -106,6 +118,12 @@ export default {
         this.workout.sets[set.id].data.push(setLog)
       } else {
         this.error = "Please select an exercise first"
+      }
+    },
+    async deleteSet(set){
+      if(set.id){
+        await WorkoutService.deleteSet(this.$store.state.token, set.id)
+        this.$delete(this.workout.sets, set.id)
       }
     },
     async updateSetLog(setLog){

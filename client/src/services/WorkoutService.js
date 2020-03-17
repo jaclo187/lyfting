@@ -10,6 +10,9 @@ export default {
   newSet(token, workoutID){
     return Api().post('workouts/set/new', {token: token, workoutID: workoutID})
   },
+  deleteSet(token, setID){
+    return Api().post('workouts/set/delete', {token: token, setID: setID})
+  },
   newSetLog(token, setID, exerciseName){
     return Api().post('workouts/set/log', {token: token, setID: setID, exercise: exerciseName})
   },

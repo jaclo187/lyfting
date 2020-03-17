@@ -14,7 +14,7 @@ module.exports = {
             const decode = jwt.verify(req.body.token, config.jwt.secret);
             //this code down here is an absolute mess but it works
             if(decode){
-                if(!conn) await connect()
+                await connect()
                 let query,
                 params
 
@@ -87,6 +87,7 @@ module.exports = {
 
     async post(req, res) {
         try {
+            await connect()
             const decode = jwt.verify(req.body.token, config.jwt.secret);
             if(decode){
                 const newWorkout = await workout.create({fk_user: decode.id})
@@ -100,6 +101,7 @@ module.exports = {
 
     async update(req, res) {
         try {
+            await connect()
             const decode = jwt.verify(req.body.token, config.jwt.secret);
             
             if(decode && decode !== ""){
@@ -119,6 +121,7 @@ module.exports = {
 
     async delete(req, res) {
         try {
+            await connect()
             const decode = jwt.verify(req.headers.authorization, config.jwt.secret)
             if(decode && req.params.id){
                 await workout.destroy({where: {id: req.params.id}})
@@ -136,6 +139,7 @@ module.exports = {
     
     async newSet(req, res) {
         try{
+            await connect()
             const decode = jwt.verify(req.body.token, config.jwt.secret)
             if(decode){
                 const newSet = await set.create({fk_workout: req.body.workoutID})
@@ -150,6 +154,7 @@ module.exports = {
 
     async newSetLog(req, res) {
         try{
+            await connect()
             const decode = jwt.verify(req.body.token, config.jwt.secret)
             if(decode){
                 const exerciseFound = await exercise.findOne({where: {name: req.body.exercise}})
@@ -164,10 +169,11 @@ module.exports = {
         
     },
 
-    async updateSetLog(req, res){
+    async updateSetLog(req, res) {
         const decode = jwt.verify(req.body.token, config.jwt.secret)
         if(decode){
             try {
+                await connect()
                 await set_exercise_log.update(
                     {
                         weight: req.body.setLog.weight,
@@ -182,7 +188,7 @@ module.exports = {
                 )
                 res.status(200).send()
             } catch (error) {
-                res.status(400).send({
+                res.status(500).send({
                     error: "Set could not be updated."
                 })
             }
@@ -191,12 +197,13 @@ module.exports = {
         }
     },
 
-    async updateSetLogExercise(req, res){
+    async updateSetLogExercise(req, res) {
         
         const decode = jwt.verify(req.body.token, config.jwt.secret)
         
         if(decode){
             try {
+                await connect()
                 const exerciseFound = await exercise.findOne({where: {name: req.body.exercise}})
                 let exerciseID = exerciseFound.toJSON().id
                 let result = await set_exercise_log.update(
@@ -212,13 +219,32 @@ module.exports = {
                 if(result > 0) res.status(200).send()
                 else res.status()
             } catch (error) {
-                res.status(400).send({
+                res.status(500).send({
                     error: "Exercise could not be updated."
                 })
             }
         } else{
             res.status(401).send({error: "Please log in to use our app"})
         }
+    },
+
+    async deleteSet(req, res) {
+
+        const decode = jwt.verify(req.body.token, config.jwt.secret)
+        if(!req.body.setID) res.status(300).send({msg: "Please provide set id"})
+        if(decode){
+            try{
+                await connect()
+                await set.destroy({where: {id: req.body.setID}})
+                res.status(200).send()
+            } catch (error) {
+                console.log(error, "ERROR")
+                res.status(500).send({error: "Internal Server Error"})
+            }
+        } else{
+            res.status(401).send({error: "Please log in to use our app"})
+        }
+
     }
 }
 

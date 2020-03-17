@@ -15,6 +15,7 @@ module.exports = app => {
 
     app.post('/workouts/set/new', Workouts.newSet)
     app.post('/workouts/set/log', Workouts.newSetLog)
+    app.post('/workouts/set/delete', Workouts.deleteSet)
 
     app.patch('/workouts/set/log/update', Workouts.updateSetLog)
     app.patch('/workouts/set/exercise/update', Workouts.updateSetLogExercise)
