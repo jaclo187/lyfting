@@ -47,6 +47,7 @@ export default {
       if (response) {
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
+        this.$router.push({name: 'Workouts'})
       }
     }
   }
