@@ -4,7 +4,7 @@
     <v-toolbar-title>
       <router-link to="/">
         <span class="home">
-          Lyfting 🏋️‍♂️
+          Lyfting 🏋️‍♂️ 
         </span>
       </router-link>
     </v-toolbar-title>

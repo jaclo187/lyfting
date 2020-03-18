@@ -1,6 +1,6 @@
 <template>
   <div class="white elevation-2">
-      <v-toolbar text dense class="blue">
+      <v-toolbar text dense color="accent">
           <v-toolbar-title>{{title}}</v-toolbar-title>
           <v-btn icon :to="`/workouts/edit/${this.id}`">
             <v-icon>mdi-pencil</v-icon>

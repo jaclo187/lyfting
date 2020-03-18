@@ -74,7 +74,7 @@
         </div>
       </v-expansion-panel>
     </v-expansion-panels>
-    <v-btn class="mx-2 mt-2" fab dark large color="indigo" @click="addSet">
+    <v-btn class="mx-2 mt-2" fab dark large color="secondary" @click="addSet">
       <v-icon dark>mdi-plus</v-icon>
     </v-btn>
   </v-container>
