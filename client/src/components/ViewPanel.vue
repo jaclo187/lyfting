@@ -9,7 +9,6 @@
             <v-icon>mdi-delete</v-icon>
           </v-btn>
       </v-toolbar>
-
       <div class="pl-4 pr-4 pt-2 pb-2">
           <slot>
               Nothing here.
