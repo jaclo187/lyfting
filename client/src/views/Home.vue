@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/lyfting_web.jpg" />
+    <v-img alt="Vue logo" src="../assets/lyfting_web.jpg" />
   </div>
 </template>
 
