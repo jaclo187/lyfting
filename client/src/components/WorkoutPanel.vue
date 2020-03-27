@@ -1,8 +1,8 @@
 <template>
-  <ViewPanel :title="workout.name != null ? workout.name : workout.date" :id="workout.id" class="mb-2">
-    <v-card v-if="workout">
+  <ViewPanel :title="workout.name != null ? workout.name : workout.date" :id="workout.id" class="workout-panel">
+    <div v-if="workout">
       <SetPanel v-for="set in workout.sets" :key="set.id" :set='set'/>
-    </v-card>
+    </div>
   </ViewPanel>
 </template>
 
@@ -29,5 +29,7 @@ export default {
 </script>
 
 <style scoped>
-
+ .workout-panel {
+   margin: 0.2vw;
+ }
 </style>
