@@ -5,7 +5,11 @@ const mysql = require('mysql2/promise');
 let conn = undefined
 
 const connect = async () => {
-    if (!conn) conn = await mysql.createConnection(config.db);
+    conn = await mysql.createConnection(config.db);
+    conn.on('error', error => {
+        connect() //Restarts connection if server closes connection https://github.com/sidorares/node-mysql2/issues/836#issuecomment-414281593 
+        console.log(error, "MYSQL CONNECTION LOST")
+    })
 };
 
 module.exports = {
@@ -14,7 +18,7 @@ module.exports = {
             const decode = jwt.verify(req.body.token, config.jwt.secret);
             //this code down here is an absolute mess but it works
             if(decode){
-                await connect()
+                if(!conn) await connect()
                 let query,
                 params
 
@@ -87,7 +91,7 @@ module.exports = {
 
     async post(req, res) {
         try {
-            await connect()
+            if(!conn) await connect()
             const decode = jwt.verify(req.body.token, config.jwt.secret);
             if(decode){
                 const newWorkout = await workout.create({fk_user: decode.id})
@@ -101,7 +105,7 @@ module.exports = {
 
     async update(req, res) {
         try {
-            await connect()
+            if(!conn) await connect()
             const decode = jwt.verify(req.body.token, config.jwt.secret);
             
             if(decode && decode !== ""){
@@ -121,7 +125,7 @@ module.exports = {
 
     async delete(req, res) {
         try {
-            await connect()
+            if(!conn) 
             const decode = jwt.verify(req.headers.authorization, config.jwt.secret)
             if(decode && req.params.id){
                 await workout.destroy({where: {id: req.params.id}})
@@ -139,7 +143,7 @@ module.exports = {
     
     async newSet(req, res) {
         try{
-            await connect()
+            if(!conn) await connect()
             const decode = jwt.verify(req.body.token, config.jwt.secret)
             if(decode){
                 const newSet = await set.create({fk_workout: req.body.workoutID})
@@ -154,7 +158,7 @@ module.exports = {
 
     async newSetLog(req, res) {
         try{
-            await connect()
+            if(!conn) await connect()
             const decode = jwt.verify(req.body.token, config.jwt.secret)
             if(decode){
                 const exerciseFound = await exercise.findOne({where: {name: req.body.exercise}})
@@ -173,7 +177,7 @@ module.exports = {
         const decode = jwt.verify(req.body.token, config.jwt.secret)
         if(decode){
             try {
-                await connect()
+                if(!conn) await connect()
                 await set_exercise_log.update(
                     {
                         weight: req.body.setLog.weight,
@@ -203,7 +207,7 @@ module.exports = {
         
         if(decode){
             try {
-                await connect()
+                if(!conn) await connect()
                 const exerciseFound = await exercise.findOne({where: {name: req.body.exercise}})
                 let exerciseID = exerciseFound.toJSON().id
                 let result = await set_exercise_log.update(
@@ -234,7 +238,7 @@ module.exports = {
         if(!req.body.setID) res.status(300).send({msg: "Please provide set id"})
         if(decode){
             try{
-                await connect()
+                if(!conn) await connect()
                 await set.destroy({where: {id: req.body.setID}})
                 res.status(200).send()
             } catch (error) {
