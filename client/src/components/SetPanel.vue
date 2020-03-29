@@ -7,13 +7,17 @@
             <span class="bold">{{transformString(set.musclegroup)}}</span>
         </v-card>
         <br>
-        <v-card v-for="data in set.data" :key='data.id' class="set_card">
-            <v-card v-for="(item, key) in data" :key="key">
-                <span v-if="key == 'weight' && item !== null">{{item}}kg</span>
-                <span v-if="key == 'reps' && item !== null">{{item}}x</span>
-                <span v-if="key == 'time' && item !== null">{{item}}min</span>
+        <span v-if="set.data.length >= 1">
+            <v-card v-for="data in dataWithValues" :key='data.id' class="set_card">
+                <span >
+                    <div v-for="(item, key) in data" :key="key">
+                        <span v-if="key == 'weight' && item !== null">{{item}}kg</span>
+                        <span v-if="key == 'reps' && item !== null">{{item}}x</span>
+                        <span v-if="key == 'time' && item !== null">{{item}}min</span>
+                    </div>
+                </span>
             </v-card>
-        </v-card>
+        </span>
     </v-layout>
     <v-layout v-else row>
         <v-card class="set_card">&lt;Empty Exercise&gt;</v-card>
@@ -27,8 +31,18 @@ export default {
     },
     props : [ "set" ],
     methods : {
-        transformString(string){
+        transformString(string) {
             return string.charAt(0).toUpperCase() + string.slice(1)
+        },
+        hasValues(data) {
+            console.log(data)
+            if(data.time !== null || data.reps !== null || data.weight !== null) return true
+            else return false
+        }
+    }, 
+    computed : {
+        dataWithValues() {
+            return this.set.data.filter(i => this.hasValues(i))
         }
     }
 }
