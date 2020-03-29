@@ -35,7 +35,6 @@ export default {
             return string.charAt(0).toUpperCase() + string.slice(1)
         },
         hasValues(data) {
-            console.log(data)
             if(data.time !== null || data.reps !== null || data.weight !== null) return true
             else return false
         }
