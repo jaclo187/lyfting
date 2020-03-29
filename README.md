@@ -1,4 +1,6 @@
-# lyfting
+# Lyfting
+Fitness tracker
+[Visit the webapp](https://lyfting.fit)
 
 ## Project setup
 ```
