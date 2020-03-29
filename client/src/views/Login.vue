@@ -5,10 +5,10 @@
       <v-container>
         <v-row>
           <v-col cols="8" sm="4" md="3">
-            <v-text-field v-model="email" label="E-mail"></v-text-field>
+            <v-text-field :rules="[rules.required, rules.email]" v-model="email" label="E-mail"></v-text-field>
           </v-col>
           <v-col cols="8" sm="4" md="3">
-            <v-text-field v-model="password" type="password" label="Password"></v-text-field>
+            <v-text-field :rules="[rules.required]" v-model="password" type="password" label="Password"></v-text-field>
           </v-col>
           <v-col>
             <v-btn @click="login">Login</v-btn>
@@ -32,7 +32,15 @@ export default {
       email: '',
       password: '',
       error: null,
-      snackbar: false
+      snackbar: false,
+      rules: {
+          required: value => !!value || 'Required.',
+          counter: value => value.length <= 20 || 'Max 20 characters',
+          email: value => {
+            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            return pattern.test(value) || 'Invalid e-mail.'
+          }
+      }
     }
   },
   methods: {
