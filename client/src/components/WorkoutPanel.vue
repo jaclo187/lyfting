@@ -1,5 +1,5 @@
 <template>
-  <ViewPanel :title="workout.name != null ? workout.name : workout.date" :id="workout.id" class="workout-panel">
+  <ViewPanel :title="workout.name != null ? workout.name : workout.date" :id="workout.id" class="workout-panel ml-2 mr-2">
     <div v-if="workout">
       <SetPanel v-for="set in workout.sets" :key="set.id" :set='set'/>
     </div>
