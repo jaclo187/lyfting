@@ -7,7 +7,7 @@ let conn = undefined
 const connect = async () => {
     conn = await mysql.createConnection(config.db);
     conn.on('error', error => {
-        connect() //Restarts connection if server closes connection https://github.com/sidorares/node-mysql2/issues/836#issuecomment-414281593 
+        connect() //Restarts connection if server closes connection https://github.com/sidorares/node-mysql2/issues/836#issuecomment-414281593
         console.log(error, "MYSQL CONNECTION LOST")
     })
 };
@@ -125,7 +125,7 @@ module.exports = {
 
     async delete(req, res) {
         try {
-            if(!conn) 
+            if(!conn) await connect()
             const decode = jwt.verify(req.headers.authorization, config.jwt.secret)
             if(decode && req.params.id){
                 await workout.destroy({where: {id: req.params.id}})
