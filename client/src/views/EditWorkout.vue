@@ -65,7 +65,7 @@
                   v-for="type in types"
                   :key="type"
                   >
-                    <v-text-field v-model="d[`${type}`]" :type="type == 'reps' ? 'number' : 'text'" :label="type" @change="updateSetLog(d, $event)" :class="`${type}_suffix`"></v-text-field>
+                    <v-text-field v-model="d[`${type}`]" type="number' : 'text'" :label="type" @change="updateSetLog(d, $event)" :suffix="`${getSuffix(type)}`"></v-text-field>
                   </v-card>
                 </v-col>
               </v-row>
@@ -132,6 +132,11 @@ export default {
     async updateSetLogExercise(set){
       await WorkoutService.updateSetLogExercise(this.$store.state.token, set.id, set.exercise)
     },
+    getSuffix(type) {
+      if(type === "reps") return "x"
+      else if(type === "weight") return "kg"
+      else return "min"
+    }
   },
   computable :  {
     isSetDefined(){
